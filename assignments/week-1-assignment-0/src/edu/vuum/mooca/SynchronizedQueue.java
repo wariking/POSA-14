@@ -232,9 +232,10 @@ public class SynchronizedQueue {
             // interesting results will occur if you start the
             // consumer first.
             //consumer.start();
+            consumer.start();
             producer.start();
             System.out.println("procuder start");
-            consumer.start();
+            
             System.out.println("consumer start");
             // Give the Threads a chance to run before interrupting
             // them.
