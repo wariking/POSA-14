@@ -1,6 +1,8 @@
 package edu.vuum.mooca;
 import java.util.concurrent.*;
 
+import edu.vuum.mooca.SynchronizedQueue.QueueAdapter;
+
 /**
  * @class SynchronizedQueue
  * 
@@ -220,24 +222,34 @@ public class SynchronizedQueue {
             // initialization below to create two Java Threads, one
             // that's passed the producerRunnable and the other that's
             // passed the consumerRunnable.
-            Thread consumer = null;
-            Thread producer = null;
-
+            //Thread consumer = new Thread(consumerRunnable);
+            //Thread consumer = null;
+            //Thread producer = null;
+            Thread producer = new Thread(producerRunnable);
+            
+            Thread consumer = new Thread(consumerRunnable);
             // TODO - you fill in here to start the threads. More
             // interesting results will occur if you start the
             // consumer first.
-            
+            //consumer.start();
+            producer.start();
+            System.out.println("procuder start");
+            consumer.start();
+            System.out.println("consumer start");
             // Give the Threads a chance to run before interrupting
             // them.
             Thread.sleep(100);
 
             // TODO - you fill in here to interrupt the threads.
-
+            producer.interrupt();
+            consumer.interrupt();
             // TODO - you fill in here to wait for the threads to
             // exit.
-            
+            producer.join();
+            consumer.join();
             // Do some sanity checking to see if the Threads work as
             // expected.
+            
             if (consumer == null 
                 || producer == null)
                 return SynchronizedQueueResult.THREADS_NEVER_CREATED;
@@ -258,8 +270,15 @@ public class SynchronizedQueue {
                 return SynchronizedQueueResult.THREADS_TIMEDOUT;
             else
                 return SynchronizedQueueResult.RAN_PROPERLY;
+            
         } catch (Exception e) {
             return SynchronizedQueueResult.TESTING_LOGIC_THREW_EXCEPTION;
         }
+    }
+    public static void main(String[] args){
+    	System.out.println("waiting for you");
+    	BlockingQueue<Integer> bqueue = new LinkedBlockingQueue<Integer>();
+    	QueueAdapter<Integer> queue = new QueueAdapter<Integer>(bqueue);
+    	SynchronizedQueue.testQueue(queue);
     }
 }
