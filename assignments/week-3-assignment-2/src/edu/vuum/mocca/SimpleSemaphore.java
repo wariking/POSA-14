@@ -73,13 +73,10 @@ public class SimpleSemaphore {
     	mLock.lock();
     	try{
     		while(0 == mPermits){
-    			mCondition.await();
+    			mCondition.awaitUninterruptibly();
     		}	
     		mPermits--;
     		mCondition.signal();
-    	} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}finally{
     		
     		mLock.unlock();
