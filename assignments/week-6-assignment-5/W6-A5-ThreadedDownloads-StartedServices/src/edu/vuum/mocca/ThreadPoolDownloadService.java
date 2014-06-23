@@ -72,8 +72,11 @@ public class ThreadPoolDownloadService extends Service {
     	// TODO - You fill in here, by replacing null with an
         // invocation of the appropriate factory method in
         // DownloadUtils that makes a MessengerIntent.
-
-        return null;
+    	Intent intent = DownloadUtils.makeMessengerIntent(context,
+    			ThreadPoolDownloadService.class, 
+    			handler, 
+    			uri);
+    	return intent;
     }
 
     /**

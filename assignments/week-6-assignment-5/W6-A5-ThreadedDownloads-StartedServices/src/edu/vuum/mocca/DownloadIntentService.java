@@ -5,8 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Messenger;
-
-/**
+import edu.vuum.mocca.DownloadUtils;
+ /*
  * @class DownloadIntentService
  *
  * @brief This class extends the IntentService, which provides a
@@ -62,7 +62,10 @@ public class DownloadIntentService extends IntentService {
     	// TODO - You fill in here to replace null with a call to the
     	// factory method in DownloadUtils that makes a Messenger
     	// Intent with the appropriate parameters.
-
+    	Intent intent = DownloadUtils.makeMessengerIntent(context,
+    			DownloadIntentService.class,
+    			handler,
+    			uri);
         return null;
     }
 
