@@ -2,13 +2,15 @@ package edu.vuum.mocca;
 
 import java.lang.ref.WeakReference;
 
-import android.content.Context;
+
+
+
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
 import android.view.View;
 import android.widget.Toast;
-
+import edu.vuum.mocca.*;
 /**
  * This is the main activity that the program uses to start the
  * ThreadedDownloads application.  It allows the user to input the URL
@@ -62,31 +64,34 @@ public class DownloadActivity extends DownloadBase {
     	 * @see https://groups.google.com/forum/#!msg/android-developers/1aPZXZG6kWk/lIYDavGYn5UJ
     	 */
     	public MessengerHandler(DownloadActivity outer) {
-    		outerClass = new WeakReference<DownloadActivity>(outer);
+            outerClass = new WeakReference<DownloadActivity>(outer);
     	}
     	
     	// Handle any messages that get sent to this Handler
-    	public void handleMessage(Message msg) {
+    	@Override
+		public void handleMessage(Message msg) {
     		
-    		// Get an actual reference to the DownloadActivity
-    		// from the WeakReference.
-    		DownloadActivity activity = outerClass.get();
+            // Get an actual reference to the DownloadActivity
+            // from the WeakReference.
+            final DownloadActivity activity = outerClass.get();
     		
-    		// If DownloadActivity hasn't been garbage collected
-    		// (closed by user), display the sent image.
-    		if (activity != null) {
-	            // TODO - You fill in here to display the image
-	            // bitmap that's been downloaded and returned to
-	            // the DownloadActivity as a pathname that's named
-	            // "PATHNAME".
-    			//displayBitmap(msg.getData().getString("PATHNAME"));
-                }
+
+            // If DownloadActivity hasn't been garbage collected
+            // (closed by user), display the sent image.
+            if (activity != null) {
+                // TODO - You fill in here to display the image
+                // bitmap that's been downloaded and returned to
+                // the DownloadActivity as a pathname who's Bundle
+            	// key is defined by DownloadUtils.PATHNAME_KEY
+            	activity.displayBitmap(msg.getData().getString(DownloadUtils.PATHNAME_KEY));
+            }
+
     	}
     }
 
     /**
      * Instantiate the MessengerHandler, passing in the
-     * DownloadActivity to help with garbage collection.
+     * DownloadActivity to be stored as a WeakReference
      */
     MessengerHandler handler = new MessengerHandler(this);
     
@@ -136,23 +141,5 @@ public class DownloadActivity extends DownloadBase {
     	Toast.makeText(this,
                        which,
                        Toast.LENGTH_SHORT).show();
-    }
-
-    /** Called when this activity becomes visible after onStart().
-     * 	Also called when the activity is un-paused.
-     */
-    @Override
-    public void onResume() {
-        // Attach handler to looper.
-    	super.onResume();
-    }
-
-    /**
-     * Called when this activity becomes partially hidden.
-     */
-    @Override
-    public void onPause() {
-        // Remove handler from looper.
-    	super.onPause();    	
     }
 }
